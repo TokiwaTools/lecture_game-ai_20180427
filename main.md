@@ -1,186 +1,177 @@
-# 便利ツールLT
+# ゲームAI勉強会
 
-<img src="http://kiito.me/assets/img/icons/tokiwa.png" style="margin:0; background: none; border:0" width=100vw />
-### [ときわ](https://twitter.com/tkw_fms) (B4)
+<h3>
+	<img src="http://kiito.me/assets/img/icons/tokiwa.png" style="margin:0; background: none; border:0; vertical-align: middle;" height=60vw />
+	<a href="https://twitter.com/kiito1000">Tokiwa</a> (B4)
+</h3>
+
+#### 2018/04/27
 
 ---
 
-## Markdown関連
+## [テトリスを題材にしたスケールダウンを利用した学習手法の開発](https://ipsj.ixsq.nii.ac.jp/ej/index.php?active_action=repository_view_main_item_detail&page_id=13&block_id=8&item_id=183842&item_no=1)
+
+---
+
+### 概要
+##### テトリスの新しい汎用的学習方法を開発した
+
+---
+
+### 背景
+
+- 評価関数を自動で学習させる 汎用的な手法が流行っている
+	- 特に強化学習の一種である `Deep Q-Network` (DQN)が成功している
+- このような汎用的学習手法は複雑なゲームではうまくいかない
+	- テトリスもその一つ
+- DQNは とりあえず適当にやってみる(ランダム試行)
+	- ランダムでやっても良い感じにならないゲームには向いていない
 
 |||
 
-### Markdownのアツサについて
-
-- 誰かが語ってくれるはず
-- Markdown から HTMLへ変換できるため、なんでもMarkdownで書こうとするMD教が存在する (入信済)
-
----
-
-### [reveal.js](https://revealjs.com/#/)
-
-- **Markdown** で **スライド** が作れるフレームワーク
-	- node.jsベース
-- GitHub Pages との組み合わせによりGitで管理できてWeb公開もできる
-- Webページとしてスライドが公開できるので、共有も便利、どこでも見られる
+-  簡単な状態で学習した結果を 難しい状態に応用する `転移学習` という手法は難しいゲームにおいて効果がある
+	- テトリスにも使えるのでは？
+-  簡単な状態をどうやって作るか？
+	- 盤を狭める！ ( スケールダウン)
 
 |||
 
-#### メリット
+- うまくいけばスケールダウンできる他のゲームにも応用できる
+ - これが自動で評価関数を生み出す汎用的手法の1つになる？
 
-- Gitによるバージョン管理
-- HTMLの恩恵が得られる
-	- 共有のしやすさ
-	- ハイパーリンク
-	- iframeなどの埋め込み
-- CSSによる自由度の高いデザイン
-	- レスポンシブ
-	- デフォルトテーマがかっこいい
-- プレゼンターモードあり (`s`)
+---
+
+### テトリスのルール
+- 降ってくるブロックが画面内に置けるように掃除していく落ちゲー
+- 横一列がブロックで埋まったらその列のブロックが消える
+
+---
+
+### 関連研究
+- DQNは適当にやってもまあまあできる簡単なゲームで効果を上げた
+	- 複雑なゲームでは成功せず
+- テトリスのAI研究
+	- 交差エントロピー法という手法が効果が高かった
+		- ただし評価関数は人間が選定していたので 汎用的でない
+	- 近似動的計画法という手法はさらに効果があった
+		- ただしこれも人間が選んでいた
+
+---
+
+### テトリスの難しさ
 
 |||
 
-#### デメリット
+#### オレンジのブロックが降ってきた場合
 
-- 最初が初心者には難しい
-- テーマが少なめ、探しづらい
-	- ほとんどが日本語に適応してないのでフォントがネック
-	- 一度作ってしまえばコピーするだけなので簡単
-- 細かくレイアウトしようとするとHTMLを使うことになる
+| 隙間を埋めた状態 | 隙間を埋めなかった状態 |
+|:---:|:---:|
+| ![](/images/tetris1.jpg) | ![](/images/tetris2.jpg) |
+
+- 1回のミスが後に大きく影響する
+	- 適当プレイが弱い原因
+
+---
+
+### テトリスをスケールダウンさせる
+- 通常: 20x10ブロック
+	- 5x5でも問題なくプレイできる
 
 |||
 
-#### 支援
-
-- `black` テーマの[改造版](https://github.com/TokiwaTools/lecture_tools/blob/master/css/theme/black-rev.css)
-- [サンプルテーマ一覧](https://github.com/hakimel/reveal.js/wiki/Example-Presentations)
-	- 日本語なし
-- 自作スライド
-	- [阿原研2017年度末発表会](https://github.com/TokiwaTools/present_2017final)
-	- [リーダブルコーザ](https://github.com/TokiwaTools/lecture_readable)
-	- [GAS講座(未完成)](https://github.com/TokiwaTools/lecture_gas)
-		- タイトル画面に拘りすぎた
-
----
-
-### [Jekyll](https://jekyllrb-ja.github.io/)
-
-- **Markdown** で 静的**Webページ** が作れるフレームワーク
-	- Rubyベース
-- GitHub Pagesと連携し、プッシュするだけでWebページができあがる
-- ブログ、ポートフォリオなど多数のテンプレートがある
+- 盤面サイズを小さくすれば横一列を揃えやすくなる
+	- 盤面サイズの小さい時の学習結果を大きいサイズに利用していく
+	- 盤面を分割しその中で最も評価の高い行動を選択する
 
 |||
 
-#### メリット
+<img src="/images/tetris3.jpg" height="600vh"/>
 
-- Gitによるバージョン管理
-- 多数のテンプレート
-	- しかもかっこいい
-- 静的ページなので速い
+---
+
+### 実験
+
+#### 実験内容
+1. 盤面サイズ 5x5<br>
+2. 盤面サイズ 7x7<br>
+3. 1の結果を利用した盤面サイズ7x7<br>
 
 |||
 
-#### デメリット
-
-- やっぱり細かくやろうとするとHTMLで書く必要がある
-- 環境構築がややこしい (Windows)
-- 使うテンプレートによってビルドシステムが異なり、ローカルサーバーの実行方法が異なる
-	- Gradle, gulp など
-	- 最初は有名なテンプレートを使うべき (資料が充実している)
-
-|||
-
-#### 支援
-
-- 自作Jekyll製ページ
-	- [総コンHP](https://github.com/ccc-sokon/ccc-sokon.github.io)
-	- [ポートフォリオ](https://github.com/TokiwaTools/tokiwatools.github.io)
-- [テーマ配布所](http://jekyllthemes.org/)
-
----
-
-### [Sway](https://sway.com)
-
-- Microsoft製のWebスライド
-- PowerPointより簡単に作れる (LT向き)
-- 簡単なレスポンシブページとしても
+#### 手法と定義
+- Q学習を用いる
+- 報酬
+	- 横列を揃える: `列の数 x 1` 点
+	- ゲームオーバー: `-10`点
+- 入力
+	- 盤面
+	- 操作中のピース
+	- 次に操作するピース
+- 出力
+	- ピースのx座標と回転の向きの組み合わせ
+		- その中で価値(Q値)が最大の手をとる
 
 |||
 
-#### 2016年にSway講座を開きました
-<iframe width="760px" height="500px" src="https://sway.com/s/RSICxTuIcx03Gk9l/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh" allowfullscreen mozallowfullscreen msallowfullscreen webkitallowfullscreen></iframe>
+- 手の選び方
+	- 5x5,7x7: ε-greedy法 (ε = 0.05)
+		- 確率 `ϵ` で探索、確率 `1-ϵ` でQ値が最大のものを選ぶ
+	- 5x5の結果を利用した7x7
+		- Q値が最大の手を選択: `90%`
+		- ランダム選択: `0.05`
+		- 学習結果を利用: `0.05`
+
+|||
+
+#### 結果
+- (1) 5x5
+	- 4000万回の学習
+	- 4.66lines / game
+		- (参考) 全ランダム:  0.098lines / game
+		- ランダムエージェントよりは大分まし
+
+|||
+
+- (2) 7x7
+
+![](/images/tetris4.jpg)
+
+###### 横軸: 学習ステップ数<br>縦軸: 消去ライン数 / game
+
+- 普通に7x7を学習した方が性能が良いという残念な結果に
 
 ---
 
-### [Dropbox Paper](https://paper.dropbox.com/)
+### 考察
 
-- Dropboxが最近リリースしたノートサービス
-- ブラウザ, iOS, Androidがある
-- Markdownで書ける
-- 連携
-	- Dropboxのファイル
-	- Google Calendar
+#### 性能低下の原因
+- 狭い盤面で評価の高い手が必ずしも元の広い盤面でも好手とはいえない
+	- 逆に、狭い盤で評価が悪ければ元の盤面でも評価が悪いとはいえる
+		- これを利用して逆に悪手を選ばないようにすればよい？
 
----
-
-### スマホアプリ
-
-- [Spark](https://sparkmailapp.com/) `iOS` `Mac`
-	- メーラー、最強、Google, Outlook, Office365対応
-- [nicoli](https://itunes.apple.com/jp/app/nicoli-for-%E3%83%8B%E3%82%B3%E3%83%8B%E3%82%B3%E5%8B%95%E7%94%BB/id918184283?mt=8) `iOS` (有料)
-	- ニコニコ動画支援ツール
-- [VOX](https://itunes.apple.com/jp/app/vox-player/id916215494?ls=1&mt=8) `iOS` `Mac`
-	- メディアプレイヤー
-- [Instaflash Pro](https://itunes.apple.com/jp/app/instaflash-pro/id888701288?mt=8) `iOS`
-	- 画像加工
-- [feather](https://itunes.apple.com/jp/app/feather-for-twitter/id793157344?mt=8) `iOS` (一部有料)
-	- 廃人向けTwitterクライアント (Tweetdeck風)
+##### 例
+![](/images/tetris5.jpg)
 
 ---
 
-### Chrome拡張機能
-
-- [Live Streaming Checker](https://chrome.google.com/webstore/detail/live-streaming-checker/akdjdcpngmpdcojlidemkbihnjdmgllg?hl=ja)
-	- Youtube Live, Twitch, ニコ生などの配信通知
-- [BetterTweetDeck](https://chrome.google.com/webstore/detail/bettertweetdeck/micblkellenpbfapmcpcfhcoeohhnpob?hl=ja)
-	- Twitter廃人向けクライアント「Tweetdeck」の廃人向けカスタマイズツール
-- [crxMouse Chrome Gestures](https://chrome.google.com/webstore/detail/crxmouse-chrome-gestures/jlgkpaicikihijadgifklkbpdajbkhjo?hl=ja)
-	- マウスジェスチャー
-- [にこさぽ](https://chrome.google.com/webstore/detail/%E3%81%AB%E3%81%93%E3%81%95%E3%81%BD-%EF%BC%88%E3%83%8B%E3%82%B3%E7%94%9F%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%EF%BC%89/kfnogdokhemdbbclknmmjpcnmjmpjknc?hl=ja)
-	- ニコ生配信通知
-
----
-
-### Windowsアプリ
-
-- Mailspring (基本無料)
-	- メーラー
-- miraCal
-	- カレンダー (ストアアプリ)
-- John's Background Switcher
-	- 私の[ブログ](http://tkw.hateblo.jp/entry/unify_wallpapers)を見よ
-- Visual Studio Code
-	- エディタ
-- ATOK (有料)
-	- IME
-- QTTabBar
-	- エクスプローラ拡張
-- MacType
-	- フォントレンダラー
-- MusicBee
-	- メディアプレイヤー
-- Massigra
-	- 画像ブラウザ
+### 個人的な感想
+- 囲碁とテトリスは似ている？
+ - 格子状の盤、盤を拡大・縮小できる
+ - テトリスは画像処理をしているイメージ
+  - 陣取り: 囲碁
+  - 穴埋め: テトリス
+ - ただテトリスはもちろん不完全情報 (しかも無限)
+- テトリスにおいて列を消すことが必ず正しいのか？
+ - 消さなければ次のブロックがはまりやすくなる状況もあるのでは
+- 手の選び方の係数がどの程度結果に影響を与えるのか
+- 汎用性と性能の両立は難しいそう
+- 小さい盤面を抜き出す箇所を、置く座標を中心に決定すればよいのでは？ (素人考え)
 
 ---
 
-### その他
-
-- [Qiita 人気の投稿](https://twitter.com/qiitapoi)
-	- プログラミング関連の記事が流れてくる (難)
-- Scrapbox `ブラウザ`
-	- Markdownライクなノートサービス
-- Todoist `ブラウザ` `iOS` `Android` `Chrome`
-	- ToDoリストサービス
-- Pushbullet
-	- スマホ⇔PC間でURLの共有が簡単にできる
+### 学習に役立った記事
+- [ゼロからDeepまで学ぶ強化学習](https://qiita.com/icoxfog417/items/242439ecd1a477ece312)
+- [転移学習: 機械学習の次のフロンティアへの招待](https://qiita.com/icoxfog417/items/48cbf087dd22f1f8c6f4)
+- [やさしい深層学習の原理](http://gagbot.net/machine-learning/ml4)
+- [囲碁AI"AlphaGo"はなぜ強いのか？](http://home.q00.itscom.net/otsuki/20160415AlphaGopublic.pdf)
+ - 探索、評価、深層学習、強化学習など基礎的な知識が分かりやすい
