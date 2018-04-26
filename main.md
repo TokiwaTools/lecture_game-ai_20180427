@@ -1,7 +1,7 @@
 # ゲームAI勉強会
 
 <h3>
-	<img src="http://kiito.me/assets/img/icons/tokiwa.png" style="margin:0; background: none; border:0; vertical-align: middle;" height=60vw />
+	<img src="https://kiito.me/assets/img/icons/tokiwa.png" style="margin:0; background: none; border:0; vertical-align: middle;" height=60vw />
 	<a href="https://twitter.com/kiito1000">Tokiwa</a> (B4)
 </h3>
 
@@ -66,7 +66,7 @@
 
 | 隙間を埋めた状態 | 隙間を埋めなかった状態 |
 |:---:|:---:|
-| ![](/images/tetris1.jpg) | ![](/images/tetris2.jpg) |
+| ![](images/tetris1.jpg) | ![](images/tetris2.jpg) |
 
 - **1回のミスが後に大きく影響する**
 	- 適当プレイが弱い原因
@@ -85,7 +85,7 @@
 
 |||
 
-<img src="/images/tetris3.jpg" height="600vh"/>
+<img src="images/tetris3.jpg" height="600vh"/>
 
 ---
 
@@ -135,7 +135,7 @@
 
 ##### (2) 7x7
 
-![](/images/tetris4.jpg)
+![](images/tetris4.jpg)
 
 ###### 横軸: 学習ステップ数<br>縦軸: 消去ライン数 / game
 
@@ -151,7 +151,7 @@
 		- これを利用して逆に悪手を選ばないようにすればよい？
 
 ##### 例
-![](/images/tetris5.jpg)
+![](images/tetris5.jpg)
 
 ---
 
